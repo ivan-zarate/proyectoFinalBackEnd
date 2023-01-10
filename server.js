@@ -6,12 +6,14 @@ const fs = require("fs");
 const path = require("path");
 
 const router = require("./Routes/products");
+const cartRouter = require("./Routes/cart");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const port = 8080;
 
-app.use('/api', router)
+app.use('/api', router);
+app.use('/api', cartRouter);
 app.use(express.static("public"));
 
 app.set('views', path.join(__dirname, 'views'));
