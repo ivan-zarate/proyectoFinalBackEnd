@@ -1,7 +1,6 @@
 const express = require("express");
 const Container = require('../class');
 const fs = require("fs");
-const validateBody = require("../middlewares/validateBody");
 const moment = require("moment");
 const cartRouter = express.Router();
 
@@ -55,15 +54,15 @@ cartRouter.delete("/cart/:id", express.json(), async (req, res) => {
 cartRouter.get("/cart/:id/products", express.json(), async (req, res) => {
     try {
         let { id } = req.params;
-        id = parseInt(id)
+        id = parseInt(id);
         let productsInCart = await (fs.promises.readFile(cartFile.fileName, "utf-8"));
         productsInCart = JSON.parse(productsInCart);
         const searchedCart = productsInCart.find((cart) => cart.id == id);
         if (searchedCart == undefined) {
             res.status(404).send({ error: 'carrito no encontrado' });
         }
-        else{
-            res.status(200).send({products: productsInCart.map((product=>product.productos))});
+        else {
+            res.status(200).send({ products: productsInCart[0].productos });
         }
     } catch (error) {
         return res.status(404).send({ error: error.message });
@@ -83,17 +82,52 @@ cartRouter.post("/cart/:id/products/:id_prod", express.json(), async (req, res) 
         if (searchedCart == undefined || searchedProduct == undefined) {
             res.status(404).send({ error: 'carrito/producto no encontrado' });
         }
-        else{
-            let listProducts=productsInCart.map((product=>product.productos));
-            // listProducts=[searchedProduct, ...listProducts];
+        else {
+            let listProducts = productsInCart[0].productos;
+            const time=productsInCart[0].timeStamp;
+            listProducts.push(searchedProduct);
             console.log(productsInCart);
-            console.log("then", listProducts);
-            res.status(200).send({newCart: listProducts });
+            const newCart=[{
+                "id":id,
+                "timeStamp":time,
+                "productos":listProducts
+            }]
+            await fs.promises.writeFile(cartFile.fileName, JSON.stringify(newCart));
+            res.status(200).send( newCart );
         }
     } catch (error) {
         return res.status(404).send({ error: error.message });
     }
 });
 
+cartRouter.delete("/cart/:id/products/:id_prod", express.json(), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { id_prod } = req.params;
+        let productsInCart = await (fs.promises.readFile(cartFile.fileName, "utf-8"));
+        productsInCart = JSON.parse(productsInCart);
+        const searchedProduct = productsInCart[0].productos.find((product)=>product.id==parseInt(id_prod));
+        const searchedCart = productsInCart.find((cart) => cart.id == parseInt(id));
+        if (searchedCart == undefined || searchedProduct == undefined) {
+            res.status(404).send({ error: 'carrito no encontrado' });
+        }
+        else {
+            const time=productsInCart[0].timeStamp;
+            const remainingProducts=productsInCart[0].productos.filter((item)=>{
+                return item.id !== parseInt(id_prod);
+            });
+            const newCart=[{
+                "id":id,
+                "timeStamp":time,
+                "productos":remainingProducts
+            }];
+            console.log(newCart);
+            await fs.promises.writeFile(cartFile.fileName, JSON.stringify(newCart));
+            res.status(200).send(newCart);
+        }
+    } catch (error) {
+        return res.status(404).send({ error: error.message });
+    }
+})
 
 module.exports = cartRouter;

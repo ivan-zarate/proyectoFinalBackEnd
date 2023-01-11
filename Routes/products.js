@@ -17,13 +17,13 @@ router.use((req, res, next) => {
 router.get("/products", async (req, res) => {
   let allProducts = await (fs.promises.readFile(productFile.fileName, "utf-8"));
   allProducts = JSON.parse(allProducts);
-  console.log(allProducts);
-  const context = {
-    allProducts,
-    printProducts: true,
-  };
+  // const context = {
+  //   allProducts,
+  //   printProducts: true,
+  // };
 
-  res.render("index", context);
+  // res.render("index", context);
+  return res.status(200).send({ allProducts });
 });
 
 router.get("/products/:id", async (req, res) => {

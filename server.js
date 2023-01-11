@@ -29,19 +29,19 @@ let allProducts=[{}];
 //   }
 // }
 app.get("/", (req, res) => {
-  const context = {
-    name: "Producto",
-    description:"Breve descripcion",
-    code:"codigo",
-    price: "Precio",
-    stock: "Stock",
-    url: "imagen",
-    allProducts,
-    printProducts: false,
-    // messages:renew
-  }
+  // const context = {
+  //   name: "Producto",
+  //   description:"Breve descripcion",
+  //   code:"codigo",
+  //   price: "Precio",
+  //   stock: "Stock",
+  //   url: "imagen",
+  //   allProducts,
+  //   printProducts: false,
+  //   messages:renew
+  // }
 
-  res.render("index", context);
+  // res.render("index", context);
 });
 
 // io.on("connection", (socket) => {
