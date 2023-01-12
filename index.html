@@ -11,36 +11,71 @@
     <title>Hi-3dPrint</title>
 </head>
 
-<body>
+<body onload="obtenerProductos()">
     <nav class="navbar navbar-success bg-success mb-4">
-        <a href="/" class="navbar-brand text-light">Coder-House</a>
+        <div class="container-fluid">
+            <a href="/index.html" class="navbar-brand text-light">Coder-House</a>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="./views/cart.html"><img class="shoppingCart"src="./public/images/pngwing.com.png" alt="carrito de compras"></a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <img src='' id="products">
-    <!-- <div class="container">
-        <form id="productEntry"action="api/products" method="post">
-            <input type="text" name="title" id="title" placeholder="Producto">
-            <input type="number" name="price" id="price" placeholder="Precio">
-            <input type="url" name="thumbnail" id="thumbnail" placeholder="Imagen">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Agregar</button>
-        </form>
-        <form action="api/products" method="get">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Ver productos</button>
+    <div class="container">
+        <h2>Ingreso de Productos</h2>
+        <form id="productEntry" class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese producto</label>
+                    <input type="text" name="name" id="name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese descripcion</label>
+                    <input type="text" name="description" id="description" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese codigo</label>
+                    <input type="number" name="code" id="code" class="form-control">
+                    <input type="hidden" name="productId" id="productId">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese imagen</label>
+                    <input type="url" name="url" id="url" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese precio</label>
+                    <input type="number" name="price" id="price" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Ingrese stock</label>
+                    <input type="number" name="stock" id="stock" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <a href="#" onclick="addProduct()" class="btn btn-success my-2">Agregar producto</a>
+                    <a href="#" onclick="actualizeProduct()" class="btn btn-warning my-2">Actualizar producto</a>
+                </div>
+            </div>
         </form>
     </div>
-    <div class="table-responsive">
-        <table class="table table-dark">
-            <tr style="color: yellow">
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-            <tr>
-                <td>titulo</td>
-                <td>$precio</td>
-                <td><img style="height:4em" src="" alt="titulo"></td>
-            </tr>
-            </tr>
-        </table>
+    <div class="container">
+        <h2>Vista de productos</h2>
+        <section id="products"></section>
     </div>
+    <!-- 
+    
     <div class="container">
         <form action="api/products" method="post">
             <button class="btn btn-success my-2 my-sm-0" type="submit">Agregar producto</button>

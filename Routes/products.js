@@ -58,7 +58,7 @@ router.post("/products", express.json(), validateBody, validateUser, async (req,
     }
     products.push(newProduct);
     await fs.promises.writeFile(productFile.fileName, JSON.stringify(products));
-    res.redirect("/");
+    res.status(200).send(console.log("Producto cargado con exito"));
   } catch (error) {
     return res.status(404).send({ error: error.message });
   }
@@ -84,24 +84,23 @@ router.post("/products", express.json(), validateBody, validateUser, async (req,
 //   }
 // })
 
-router.put("/products/:id", validateBody,validateUser,  async (req, res) => {
+router.put("/products/:id", validateBody, validateUser, async (req, res) => {
   try {
-    let { id } = req.params;
-    id = parseInt(id);
+    const { id } = req.params;
     const { name, price, url, description, code, stock } = req.body;
     let products = await fs.promises.readFile(productFile.fileName, "utf-8");
     products = JSON.parse(products);
     const time = moment().format('lll');
-    const searchedProduct = products.find((product) => product.id == id);
+    const searchedProduct = products.find((product) => product.id == parseInt(id));
     if (searchedProduct == undefined) {
       res.status(404).send({ error: 'producto no encontrado' });
     }
     else {
       let productoActualizado = {};
       products.find((product) => {
-        if (product.id === id) {
+        if (product.id === parseInt(id)) {
           productoActualizado = {
-            id: id,
+            id: parseInt(id),
             timeStamp: time,
             name: name,
             description: description,
@@ -112,7 +111,9 @@ router.put("/products/:id", validateBody,validateUser,  async (req, res) => {
           }
         }
       });
-      products.splice(id - 1, 1)
+      products = products.filter((item) => {
+        return item.id !== parseInt(id);
+      });
       products.push(productoActualizado);
       await fs.promises.writeFile(productFile.fileName, JSON.stringify(products));
       res.status(200).send({ product: productoActualizado });
@@ -125,16 +126,17 @@ router.put("/products/:id", validateBody,validateUser,  async (req, res) => {
 
 router.delete("/products/:id", validateUser, async (req, res) => {
   try {
-    let { id } = req.params;
-    id = parseInt(id);
+    const { id } = req.params;
     let products = await fs.promises.readFile(productFile.fileName, "utf-8");
     products = JSON.parse(products);
-    const searchedProduct = products.find((product) => product.id == id);
+    const searchedProduct = products.find((product) => product.id == parseInt(id));
     if (searchedProduct == undefined) {
       res.status(404).send({ error: 'producto no encontrado' });
     }
     else {
-      products.splice(id-1, 1);
+      products = products.filter((item) => {
+        return item.id !== parseInt(id);
+      });
       console.log(products);
       await fs.promises.writeFile(productFile.fileName, JSON.stringify(products));
       res.status(200).send(`El producto con id ${id} fue eliminado del inventario`);
