@@ -19,7 +19,7 @@ app.use('/api', cartRouter);
 app.use(express.static("public"));
 
 
-//Futuro mensaje flotante
+//Futuro chat flotante
 
 // io.on("connection", (socket) => {
 //   console.log("usuario conectado " + socket.id);
