@@ -7,7 +7,7 @@ body {
   height: 3em;
 }
 
-#products {
+#products, #items{
   display: grid;
   flex-direction: column;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
@@ -20,7 +20,7 @@ body {
   margin-top: 2em;
 }
 
-#products div {
+#products div, #items div {
   display: flex;
   flex-direction: column;
   padding: 2em 2em 4em 2em;
@@ -28,10 +28,12 @@ body {
   border-radius: 20px;
 }
 
-#products div img {
+#products div img, #items div img {
   height: 14em;
   width: 14em;
-
+}
+#products p, #items p{
+  font-weight: bolder;
 }
 
 .btn {
@@ -47,16 +49,28 @@ body {
 #cartProducts div{
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
-
+  border: 2px solid black;
+  padding-bottom: 1em;
+  padding-top: 1em;
 }
 #cartProducts img{
   width: 3em;
-  height: 3em;
+  margin-right: 1.5em;
+}
+#cartProducts h6{
+  max-width: 7.5em;
 }
 #cartProducts p{
-  padding-left: 9em;
-  padding-right: 12em;
-  
+  font-weight: bolder;
+  padding-right: 2em;
+}
+.titulos{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: black;
+  color: yellow;
+  padding-top: .5em;
 }

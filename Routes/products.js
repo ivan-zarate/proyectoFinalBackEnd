@@ -17,12 +17,6 @@ router.use((req, res, next) => {
 router.get("/products", async (req, res) => {
   let allProducts = await (fs.promises.readFile(productFile.fileName, "utf-8"));
   allProducts = JSON.parse(allProducts);
-  // const context = {
-  //   allProducts,
-  //   printProducts: true,
-  // };
-
-  // res.render("index", context);
   return res.status(200).send({ allProducts });
 });
 
@@ -63,6 +57,8 @@ router.post("/products", express.json(), validateBody, validateUser, async (req,
     return res.status(404).send({ error: error.message });
   }
 });
+
+//Futuro chat flotante
 
 // router.post("/messages", express.json(), validateBody, async (req, res) => {
 //   try {
